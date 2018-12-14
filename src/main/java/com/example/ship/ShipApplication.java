@@ -19,7 +19,8 @@ public class ShipApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-//        shipRepository.save(new Ship( "Ana", 50));
+        shipRepository.save(new Ship( "Ana"));
+        shipRepository.save(new Ship( "Alina"));
 	}
 }
 

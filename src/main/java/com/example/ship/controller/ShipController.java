@@ -1,12 +1,18 @@
 package com.example.ship.controller;
 
 import com.example.ship.entity.Ship;
+import com.example.ship.entity.Ulei;
+import com.example.ship.form.ShipForm;
 import com.example.ship.repo.ShipRepository;
+import com.example.ship.repo.UleiDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -14,6 +20,9 @@ public class ShipController {
 
     @Autowired
     private ShipRepository shipRepository;
+
+    @Autowired
+    private UleiDAO uleiRepo;
 
     @GetMapping("/ships")
     public List<Ship> getAllShips() {
@@ -26,37 +35,25 @@ public class ShipController {
                 .orElseThrow(() -> new NullPointerException());
     }
 
-    @PutMapping("/ships/{id}")
-    public Ship changeName(@RequestBody Ship newShip,
-                            @PathVariable("id") Long id ) {
-        return shipRepository.findById(id)
-                .map(ship -> {
-                    ship.setName(newShip.getName());
-                    ship.setKm(newShip.getKm());
-                    return shipRepository.save(ship);
-                })
-                .orElseGet(() -> {
-                    newShip.setId(id);
-                    return shipRepository.save(newShip);
-                });
-    }
+    @PostMapping("/ships/oil")
+    public ResponseEntity<Void> schimbUlei(@RequestBody ShipForm shipForm) {
+        Ship ship = shipRepository.findById(shipForm.getId()).orElseThrow(NullPointerException::new);
 
-    @GetMapping("/ships/{id}/control")
-    public int getKm(@PathVariable("id") Long id) {
-        Ship s = shipRepository.findById(id).orElseThrow(NullPointerException::new);
-
-        return s.getKm();
-    }
-
-    @GetMapping("/ships/total")
-    public int getTotal() {
-        int total = 0;
-        List<Ship> list = shipRepository.findAll();
-        for (Ship s: list) {
-            total += s.getKm();
+        if (ship != null) {
+            uleiRepo.save(new Ulei(shipForm.getId(), new Date()));
         }
 
-        return total;
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
+
+    @GetMapping("/ships/{id}/oil")
+    public List<Ulei> getUlei(@PathVariable Long id) {
+        List<Ulei> list = uleiRepo.sortById(id);
+
+        return list;
+    }
+
+
+
 
 }
