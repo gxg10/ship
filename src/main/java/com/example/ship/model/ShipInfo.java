@@ -1,21 +1,20 @@
-package com.example.ship.entity;
+package com.example.ship.model;
 
-import javax.persistence.*;
+public class ShipInfo {
 
-@Entity
-@Table(name = "ship" )
-public class Ship {
-
-    @Id
-    @GeneratedValue
-    @Column(name = "id", nullable = false)
     private Long id;
-
-    @Column(name = "name", length = 128, nullable = false)
     private String name;
-
-    @Column(name = "km", nullable = false)
     private double km;
+
+    public ShipInfo() {
+
+    }
+
+    public ShipInfo(Long id, String name, double km) {
+        this.id = id;
+        this.name = name;
+        this.km = km;
+    }
 
     public Long getId() {
         return id;
@@ -23,10 +22,6 @@ public class Ship {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String name() {
-        return name;
     }
 
     public String getName() {

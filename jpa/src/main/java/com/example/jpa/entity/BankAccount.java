@@ -3,7 +3,7 @@ package com.example.jpa.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "bank_account")
+@Table(name = "Bank_Account" )
 public class BankAccount {
 
     @Id
@@ -11,19 +11,11 @@ public class BankAccount {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "full_name", length = 128, nullable = false)
+    @Column(name = "Full_Name", length = 128, nullable = false)
     private String fullName;
 
-    @Column(name = "ballance", nullable = false)
-    private double ballance;
-
-    public BankAccount(String fullName, double ballance) {
-        this.fullName = fullName;
-        this.ballance = ballance;
-    }
-
-    public BankAccount() {
-    }
+    @Column(name = "Balance", nullable = false)
+    private double balance;
 
     public Long getId() {
         return id;
@@ -41,11 +33,11 @@ public class BankAccount {
         this.fullName = fullName;
     }
 
-    public double getBallance() {
-        return ballance;
+    public double getBalance() {
+        return balance;
     }
 
-    public void setBallance(double ballance) {
-        this.ballance = ballance;
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 }
